@@ -1,0 +1,50 @@
+[
+	{
+		"id": 1,
+		"type": "Dress Shirt",
+		"description": "Dress shirts, collar shirts, button shirts",
+		"price": 2.5,
+		"imgSrc": "/images/DressShirt.jpg"
+	},
+	{
+		"id": 2,
+		"type": "Trousers",
+		"description": "Dress pants, jeans, khakis",
+		"price": 3,
+		"imgSrc": "/images/DressPants.jpg"
+	},
+	{
+		"id": 3,
+		"type": "Dress",
+		"description": "Standard dress",
+		"price": 20,
+		"imgSrc": "/images/Dress.jpg"
+	},
+	{
+		"id": 4,
+		"type": "Blouse",
+		"description": "Women's Shirt",
+		"price": 3,
+		"imgSrc": "/images/Blouse.jpg"
+	},
+	{
+		"id": 5,
+		"type": "Suit",
+		"description": "Men's Suit",
+		"price": 20,
+		"imgSrc": "/images/Suit.jpg"
+	},
+	{
+		"id": 6,
+		"type": "Jacket",
+		"description": "Winter jacket, sport jacket, dress jacket",
+		"price": 15,
+		"imgSrc": "/images/Jacket.jpg"
+	},
+	{
+		"id": 7,
+		"type": "Test",
+		"description": "Winter jacket, sport jacket, dress jacket",
+		"price": 15
+	}
+]
