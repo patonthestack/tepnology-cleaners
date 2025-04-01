@@ -1,4 +1,4 @@
-import { NavigationBar } from '@/components/navigation.component';
+import { NavigationBar } from '@/components/common/navigation.component';
 import { CartProvider } from '@/context/cart-context';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';

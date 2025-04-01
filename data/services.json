@@ -40,11 +40,5 @@
 		"description": "Winter jacket, sport jacket, dress jacket",
 		"price": 15,
 		"imgSrc": "/images/Jacket.jpg"
-	},
-	{
-		"id": 7,
-		"type": "Test",
-		"description": "Winter jacket, sport jacket, dress jacket",
-		"price": 15
 	}
 ]

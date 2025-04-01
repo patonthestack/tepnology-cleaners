@@ -1,5 +1,6 @@
 import { Box, Grid } from '@mui/material';
 import type { Metadata } from 'next';
+import AdminView from '@/components/admin/view.component';
 
 export const metadata: Metadata = {
 	title: 'Tepnology Cleaners | Admin',
@@ -11,7 +12,7 @@ export default function Admin() {
 		<Box sx={{ width: '100%', height: '100%' }}>
 			<Grid container>
 				<Grid size={12}>
-					<Box>Admin Page</Box>
+					<AdminView />
 				</Grid>
 			</Grid>
 		</Box>

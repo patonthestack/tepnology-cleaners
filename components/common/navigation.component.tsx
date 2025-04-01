@@ -1,18 +1,22 @@
 'use client';
 
+import { useCart } from '@/context/cart-context';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import {
+	AppBar,
+	Badge,
+	Box,
+	Button,
+	Container,
+	IconButton,
+	Menu,
+	MenuItem,
+	Toolbar,
+	Typography,
+} from '@mui/material';
 import { blue } from '@mui/material/colors';
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import { MouseEvent, useState } from 'react';
 
@@ -54,6 +58,11 @@ const styles = {
 
 export const NavigationBar = () => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+	const { state } = useCart();
+	const totalQuantity = Object.values(state.items).reduce(
+		(total, item) => total + item.quantity,
+		0
+	);
 
 	const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
 		setAnchorElNav(event.currentTarget);
@@ -135,7 +144,16 @@ export const NavigationBar = () => {
 					<Box sx={{ flexGrow: 0 }}>
 						<Link href={'/cart'}>
 							<IconButton sx={{ p: 0, color: 'white' }}>
-								<ShoppingCartIcon />
+								<Badge
+									badgeContent={totalQuantity > 0 ? totalQuantity : null}
+									color="error"
+									anchorOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+								>
+									<ShoppingCartIcon />
+								</Badge>
 							</IconButton>
 						</Link>
 					</Box>
