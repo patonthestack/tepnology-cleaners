@@ -298,7 +298,7 @@ const DeleteModal: FC<DeleteModalProps> = ({
 				<Typography id="modal-edit-header" variant="h6" component="h2">
 					Are you sure you wish to delete {itemToDelete.type}?
 				</Typography>
-				<Grid container sx={{ mt: 10, justifyContent: 'flex-end' }} spacing={1}>
+				<Grid container sx={{ mt: 5, justifyContent: 'flex-end' }} spacing={1}>
 					<Grid size={3}>
 						<Button
 							variant="contained"
