@@ -1,32 +1,13 @@
 import { DryCleanItem } from '@/types/dryCleanItem';
-import fs from 'fs';
 import { NextResponse } from 'next/server';
-import path from 'path';
-
-const dataFilePath = path.join(process.cwd(), 'data', 'services.json');
-
-const readServices = (): DryCleanItem[] => {
-	try {
-		const jsonData = fs.readFileSync(dataFilePath, 'utf-8');
-		return JSON.parse(jsonData) as DryCleanItem[];
-	} catch (error) {
-		console.error('Error reading services file:', error);
-		return [];
-	}
-};
-
-const writeServices = (services: DryCleanItem[]) => {
-	try {
-		fs.writeFileSync(dataFilePath, JSON.stringify(services, null, 2), 'utf-8');
-	} catch (error) {
-		console.error('Error writing to services file:', error);
-	}
-};
+import clientPromise from '@/lib/mongodb';
 
 // GET: Retrieve all services
 export async function GET() {
 	try {
-		const services = readServices();
+		const client = await clientPromise;
+		const db = client.db('tepnologyCleaners');
+		const services = await db.collection('services').find({}).toArray();
 		return NextResponse.json(services, { status: 200 });
 	} catch (error) {
 		console.error('Error retrieving services:', error);
@@ -40,34 +21,36 @@ export async function GET() {
 // POST: Add a new service
 export async function POST(request: Request) {
 	try {
-		const newService: DryCleanItem = await request.json();
+		const serviceToAdd: Omit<DryCleanItem, '_id'> = await request.json();
+		const client = await clientPromise;
+		const db = client.db('tepnologyCleaners');
 
-		if (newService.price !== undefined) {
-			if (typeof newService.price === 'string') {
-				const parsedPrice = parseFloat(newService.price);
+		if (serviceToAdd.price !== undefined) {
+			if (typeof serviceToAdd.price === 'string') {
+				const parsedPrice = parseFloat(serviceToAdd.price);
 				if (isNaN(parsedPrice)) {
 					return NextResponse.json(
 						{ error: 'Invalid price format.' },
 						{ status: 400 }
 					);
 				}
-				newService.price = parseFloat(parsedPrice.toFixed(2));
-			} else if (typeof newService.price === 'number') {
-				newService.price = parseFloat(newService.price.toFixed(2));
+				serviceToAdd.price = parseFloat(parsedPrice.toFixed(2));
+			} else if (typeof serviceToAdd.price === 'number') {
+				serviceToAdd.price = parseFloat(serviceToAdd.price.toFixed(2));
 			}
 		}
 
-		const services = readServices();
+		const result = await db.collection('services').insertOne(serviceToAdd);
 
-		newService.id = services.length ? services[services.length - 1].id + 1 : 1;
-		services.push(newService);
-		writeServices(services);
+		if (!result.acknowledged) {
+			throw new Error('Failed to insert service');
+		}
 
-		return NextResponse.json(newService, { status: 201 });
+		return NextResponse.json(result, { status: 201 });
 	} catch (error) {
-		console.error('Error adding course:', error);
+		console.error('Error adding service:', error);
 		return NextResponse.json(
-			{ error: 'Failed to add course.' },
+			{ error: 'Failed to add service.' },
 			{ status: 500 }
 		);
 	}

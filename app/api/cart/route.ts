@@ -1,3 +1,4 @@
+import clientPromise from '@/lib/mongodb';
 import { CartItem } from '@/types/cart';
 import fs from 'fs';
 import { NextResponse } from 'next/server';
@@ -26,7 +27,9 @@ const writeServices = (cartItems: CartItem[]) => {
 // GET: Retrieve all cart items
 export async function GET() {
 	try {
-		const cart = readCart();
+		const client = await clientPromise;
+		const db = client.db('tepnologyCleaners');
+		const cart = await db.collection('cart').find({});
 		return NextResponse.json(cart, { status: 200 });
 	} catch (error) {
 		console.error('Error retrieving cart items:', error);
@@ -44,15 +47,12 @@ export async function POST(request: Request) {
 		const cartItems = readCart();
 
 		const existingItemIndex = cartItems.findIndex(
-			(item) => item.id === newCartItem.id
+			(item) => item._id === newCartItem._id
 		);
 
 		if (existingItemIndex !== -1) {
 			cartItems[existingItemIndex].quantity += newCartItem.quantity;
 		} else {
-			newCartItem.id = cartItems.length
-				? cartItems[cartItems.length - 1].id + 1
-				: 1;
 			cartItems.push(newCartItem);
 		}
 
