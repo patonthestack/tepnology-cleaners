@@ -1,5 +1,6 @@
 import { BASE_URL } from '@/app/config/constants';
 import { DryCleanItem } from '@/types/dryCleanItem';
+import { ObjectId } from 'mongodb';
 
 export const getServices = async (): Promise<DryCleanItem[]> => {
 	try {
@@ -44,7 +45,7 @@ export const createService = async (
 };
 
 export const updateService = async (
-	serviceId: number,
+	serviceId: ObjectId,
 	dataToSubmit: DryCleanItem
 ): Promise<DryCleanItem | undefined> => {
 	try {
@@ -68,7 +69,7 @@ export const updateService = async (
 	}
 };
 
-export const deleteService = async (serviceId: number): Promise<void> => {
+export const deleteService = async (serviceId: ObjectId): Promise<void> => {
 	try {
 		const res = await fetch(`/api/services/${serviceId}`, {
 			method: 'DELETE',

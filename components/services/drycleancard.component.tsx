@@ -1,6 +1,7 @@
 'use client';
 
 import { useCart } from '@/context/cart-context';
+import { CartItem } from '@/types/cart';
 import { DryCleanItem } from '@/types/dryCleanItem';
 import {
 	deleteService,
@@ -139,7 +140,7 @@ const EditModal: FC<EditModalProps> = ({
 	};
 
 	const handleSubmit = async () => {
-		await updateService(updatedItem.id, updatedItem).then(() => {
+		await updateService(updatedItem._id, updatedItem).then(() => {
 			router.push('/admin');
 			router.refresh();
 		});
@@ -269,7 +270,7 @@ const DeleteModal: FC<DeleteModalProps> = ({
 	const router = useRouter();
 
 	const handleDelete = async () => {
-		await deleteService(itemToDelete.id).then(() => {
+		await deleteService(itemToDelete._id).then(() => {
 			setModalOpen(false);
 			router.push('/admin');
 			router.refresh();
@@ -293,7 +294,7 @@ const DeleteModal: FC<DeleteModalProps> = ({
 					{ textAlign: 'center', height: 200, width: 500 },
 				]}
 				component={'form'}
-				id={`form-item-delete-${itemToDelete.id}`}
+				id={`form-item-delete-${itemToDelete._id}`}
 			>
 				<Typography id="modal-edit-header" variant="h6" component="h2">
 					Are you sure you wish to delete {itemToDelete.type}?
@@ -340,7 +341,18 @@ export default function DryCleanCard({
 	isAdmin = false,
 }: DryCleanCardProps) {
 	const { state, dispatch } = useCart();
-	const quantity = state.items[item.id]?.quantity || 0;
+	const quantity =
+		state.items.findIndex(
+			(itemInCart: Partial<CartItem>) =>
+				itemInCart._id?.toString() === item._id.toString()
+		) !== -1
+			? state.items[
+					state.items.findIndex(
+						(itemInCart: Partial<CartItem>) =>
+							itemInCart._id?.toString() === item._id.toString()
+					)
+			  ]?.quantity || 0
+			: 0;
 
 	const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
 	const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
@@ -350,7 +362,7 @@ export default function DryCleanCard({
 	};
 
 	const handleRemove = () => {
-		dispatch({ type: 'REMOVE_ITEM', id: item.id });
+		dispatch({ type: 'REMOVE_ITEM', _id: item._id });
 	};
 
 	const handleAdminEdit = () => {

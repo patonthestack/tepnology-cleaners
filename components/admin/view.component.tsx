@@ -200,7 +200,10 @@ export default function AdminView(): ReactElement {
 						</Grid>
 					) : (
 						services.map((service) => (
-							<Grid size={{ xs: 12, sm: 6, lg: 4 }} key={service.id}>
+							<Grid
+								size={{ xs: 12, sm: 6, lg: 4 }}
+								key={service._id?.toString()}
+							>
 								<DryCleanCard item={service} isAdmin={true} />
 							</Grid>
 						))

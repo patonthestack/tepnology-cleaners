@@ -11,48 +11,70 @@ const CartContext = createContext<{
 const cartReducer = (state: CartState, action: CartAction): CartState => {
 	switch (action.type) {
 		case 'ADD_ITEM': {
-			const existingItem = state.items[action.item.id];
-			return {
-				...state,
-				items: {
-					...state.items,
-					[action.item.id]: {
-						...action.item,
-						quantity: existingItem ? existingItem.quantity + 1 : 1,
-					},
-				},
-			};
-		}
-		case 'REMOVE_ITEM': {
-			console.log(`action.id: ${action.id}`);
-			const existingItem = state.items[action.id];
-			console.log(`existingItem: ${JSON.stringify(existingItem)}`);
-			if (existingItem) {
-				if (existingItem.quantity === 0) {
-					delete state.items[existingItem.id];
-				} else {
-					return {
-						...state,
-						items: {
-							...state.items,
-							[action.id]: {
-								...existingItem,
-								quantity: existingItem.quantity - 1,
-							},
-						},
-					};
-				}
+			const existingItemIdx = state.items.findIndex(
+				(item) => item._id?.toString() === action.item._id.toString()
+			);
+			if (existingItemIdx !== -1) {
+				const updatedItems = [...state.items];
+				updatedItems[existingItemIdx] = {
+					...updatedItems[existingItemIdx],
+					quantity: updatedItems[existingItemIdx]?.quantity
+						? updatedItems[existingItemIdx]?.quantity + 1
+						: 1,
+				};
+
+				return {
+					...state,
+					items: updatedItems,
+				};
+			} else {
+				return {
+					...state,
+					items: [...state.items, { ...action.item, quantity: 1 }],
+				};
 			}
 		}
+		case 'REMOVE_ITEM': {
+			const existingItemIdx = state.items.findIndex(
+				(item) => item._id?.toString() === action._id.toString()
+			);
+
+			if (existingItemIdx !== -1) {
+				const existingItem = state.items[existingItemIdx];
+
+				if (existingItem?.quantity) {
+					if (existingItem.quantity === 1) {
+						return {
+							...state,
+							items: state.items.filter((item, idx) => idx !== existingItemIdx),
+						};
+					} else if (existingItem.quantity > 1) {
+						const updatedItems = [...state.items];
+						updatedItems[existingItemIdx] = {
+							...existingItem,
+							quantity: existingItem.quantity - 1,
+						};
+
+						return {
+							...state,
+							items: updatedItems,
+						};
+					}
+				}
+			}
+
+			return state;
+		}
+
 		case 'CLEAR_CART':
-			return { items: {} };
+			return { items: [] };
 		default:
 			return state;
 	}
 };
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-	const [state, dispatch] = useReducer(cartReducer, { items: {} });
+	const [state, dispatch] = useReducer(cartReducer, { items: [] });
 
 	return (
 		<CartContext.Provider value={{ state, dispatch }}>

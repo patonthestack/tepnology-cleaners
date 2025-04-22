@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { DryCleanItem } from './dryCleanItem';
 
 export interface CartItem extends DryCleanItem {
@@ -5,10 +6,10 @@ export interface CartItem extends DryCleanItem {
 }
 
 export type CartState = {
-	items: Record<number, CartItem>;
+	items: Array<Partial<CartItem>>;
 };
 
 export type CartAction =
 	| { type: 'ADD_ITEM'; item: CartItem }
-	| { type: 'REMOVE_ITEM'; id: number }
+	| { type: 'REMOVE_ITEM'; _id: ObjectId }
 	| { type: 'CLEAR_CART' };
