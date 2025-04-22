@@ -30,7 +30,7 @@ const Services: FC = async () => {
 						</Grid>
 					) : (
 						services.map((item) => (
-							<Grid size={{ xs: 12, sm: 6, lg: 4 }} key={item.id}>
+							<Grid size={{ xs: 12, sm: 6, lg: 4 }} key={item._id?.toString()}>
 								<DryCleanCard item={item} />
 							</Grid>
 						))
