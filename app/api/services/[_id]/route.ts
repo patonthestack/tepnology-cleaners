@@ -1,5 +1,6 @@
 import clientPromise from '@/lib/mongodb';
 import { DryCleanItem } from '@/types/dryCleanItem';
+import { auth } from '@clerk/nextjs/server';
 import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
 
@@ -13,8 +14,9 @@ export async function GET(
 		const db = client.db('tepnologyCleaners');
 
 		const { _id } = await context.params;
+		const objId = new ObjectId(_id);
 
-		const service = await db.collection('services').findOne({ _id: _id });
+		const service = await db.collection('services').findOne({ _id: objId });
 
 		if (!service) {
 			return NextResponse.json(
@@ -38,6 +40,12 @@ export async function PUT(
 	request: Request,
 	context: { params: Promise<{ _id: string }> }
 ) {
+	const { userId } = await auth();
+
+	if (!userId) {
+		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+	}
+
 	try {
 		const serviceToUpdate: Partial<Omit<DryCleanItem, '_id'>> =
 			await request.json();
@@ -72,7 +80,7 @@ export async function PUT(
 			.collection('services')
 			.findOneAndReplace({ _id: objId }, serviceToUpdate);
 
-		if (!result?.value) {
+		if (!result) {
 			return NextResponse.json(
 				{ error: 'Service not found.' },
 				{ status: 404 }
@@ -94,6 +102,12 @@ export async function DELETE(
 	request: Request,
 	context: { params: Promise<{ _id: string }> }
 ) {
+	const { userId } = await auth();
+
+	if (!userId) {
+		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+	}
+
 	try {
 		const client = await clientPromise;
 		const db = client.db('tepnologyCleaners');

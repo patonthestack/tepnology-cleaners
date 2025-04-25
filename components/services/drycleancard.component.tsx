@@ -171,7 +171,7 @@ const EditModal: FC<EditModalProps> = ({
 			<Box
 				sx={styles.editModalContainer}
 				component={'form'}
-				id={`form-item-${itemToEdit.type}`}
+				id={`form-item-${itemToEdit._id}`}
 				onSubmit={handleSubmit}
 			>
 				<Typography id="modal-edit-header" variant="h6" component="h2">

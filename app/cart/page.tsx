@@ -1,4 +1,5 @@
-import { Box, Grid } from '@mui/material';
+import { Cart } from '@/components/cart/cart.component';
+import { Box } from '@mui/material';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,14 +7,10 @@ export const metadata: Metadata = {
 	description: 'Checkout selected services',
 };
 
-export default function Cart() {
+export default function CartPage() {
 	return (
-		<Box sx={{ width: '100%', height: '100%' }}>
-			<Grid container>
-				<Grid size={12}>
-					<Box>Cart Page</Box>
-				</Grid>
-			</Grid>
+		<Box sx={{ width: '100%', p: 4 }}>
+			<Cart />
 		</Box>
 	);
 }

@@ -1,9 +1,19 @@
 'use client';
 
 import { useCart } from '@/context/cart-context';
-import CheckroomIcon from '@mui/icons-material/Checkroom';
-import MenuIcon from '@mui/icons-material/Menu';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {
+	SignInButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+	useUser,
+} from '@clerk/nextjs';
+
+import {
+	Checkroom as CheckroomIcon,
+	Menu as MenuIcon,
+	ShoppingCart as ShoppingCartIcon,
+} from '@mui/icons-material';
 import {
 	AppBar,
 	Badge,
@@ -59,8 +69,10 @@ const styles = {
 export const NavigationBar = () => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 	const { state } = useCart();
+	const { isSignedIn } = useUser();
+
 	const totalQuantity = Object.values(state.items).reduce(
-		(total, item) => total + item.quantity,
+		(total, item) => total + (item.quantity ? item.quantity : 0),
 		0
 	);
 
@@ -74,8 +86,12 @@ export const NavigationBar = () => {
 
 	return (
 		<AppBar position="static">
-			<Container maxWidth="xl">
-				<Toolbar disableGutters>
+			<Container
+				maxWidth="xl"
+				disableGutters
+				sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}
+			>
+				<Toolbar disableGutters sx={{ display: 'flex', width: '100%' }}>
 					<CheckroomIcon sx={styles.icon} />
 					<Link href={'/'}>
 						<Typography variant="h6" noWrap sx={styles.headerLinkMd}>
@@ -110,15 +126,31 @@ export const NavigationBar = () => {
 							onClose={handleCloseNavMenu}
 							sx={{ display: { xs: 'block', md: 'none' } }}
 						>
-							{PAGES.map((page) => (
-								<Link href={page.href} key={page.name}>
-									<MenuItem key={page.name}>
-										<Typography sx={{ textAlign: 'center' }}>
-											{page.name}
-										</Typography>
-									</MenuItem>
-								</Link>
-							))}
+							{PAGES.map((page) => {
+								if (page.name === 'Admin') {
+									return (
+										<SignedIn key={page.name}>
+											<Link href={page.href} key={page.name}>
+												<MenuItem key={page.name}>
+													<Typography sx={{ textAlign: 'center' }}>
+														{page.name}
+													</Typography>
+												</MenuItem>
+											</Link>
+										</SignedIn>
+									);
+								}
+
+								return (
+									<Link href={page.href} key={page.name}>
+										<MenuItem key={page.name}>
+											<Typography sx={{ textAlign: 'center' }}>
+												{page.name}
+											</Typography>
+										</MenuItem>
+									</Link>
+								);
+							})}
 						</Menu>
 					</Box>
 					<CheckroomIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -129,19 +161,25 @@ export const NavigationBar = () => {
 					</Link>
 
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-						{PAGES.map((page) => (
-							<Link href={page.href} key={page.name}>
-								<Button
-									key={page.name}
-									onClick={handleCloseNavMenu}
-									sx={styles.navItems}
-								>
-									{page.name}
-								</Button>
-							</Link>
-						))}
+						{PAGES.map((page) => {
+							if (page.name === 'Admin' && !isSignedIn) {
+								return null;
+							}
+
+							return (
+								<Link href={page.href} key={page.name}>
+									<Button
+										key={page.name}
+										onClick={handleCloseNavMenu}
+										sx={styles.navItems}
+									>
+										{page.name}
+									</Button>
+								</Link>
+							);
+						})}
 					</Box>
-					<Box sx={{ flexGrow: 0 }}>
+					<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
 						<Link href={'/cart'}>
 							<IconButton sx={{ p: 0, color: 'white' }}>
 								<Badge
@@ -156,6 +194,14 @@ export const NavigationBar = () => {
 								</Badge>
 							</IconButton>
 						</Link>
+						<SignedIn>
+							<UserButton />
+						</SignedIn>
+						<SignedOut>
+							<Box sx={{ cursor: 'pointer' }}>
+								<SignInButton mode="modal" />
+							</Box>
+						</SignedOut>
 					</Box>
 				</Toolbar>
 			</Container>

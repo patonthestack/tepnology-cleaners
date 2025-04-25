@@ -1,5 +1,6 @@
 import { NavigationBar } from '@/components/common/navigation.component';
 import { CartProvider } from '@/context/cart-context';
+import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
@@ -25,15 +26,17 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
-				<CartProvider>
-					<NavigationBar />
-					{children}
-				</CartProvider>
-			</body>
-		</html>
+		<ClerkProvider>
+			<CartProvider>
+				<html lang="en">
+					<body
+						className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+					>
+						<NavigationBar />
+						{children}
+					</body>
+				</html>
+			</CartProvider>
+		</ClerkProvider>
 	);
 }

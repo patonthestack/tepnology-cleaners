@@ -6,7 +6,7 @@ export interface CartItem extends DryCleanItem {
 }
 
 export type CartState = {
-	items: Array<Partial<CartItem>>;
+	items: Array<CartItem>;
 };
 
 export type CartAction =

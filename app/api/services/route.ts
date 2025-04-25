@@ -1,9 +1,10 @@
 import { DryCleanItem } from '@/types/dryCleanItem';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
+import { auth } from '@clerk/nextjs/server';
 
 // GET: Retrieve all services
-export async function GET() {
+export async function GET(request: NextRequest) {
 	try {
 		const client = await clientPromise;
 		const db = client.db('tepnologyCleaners');
@@ -20,6 +21,12 @@ export async function GET() {
 
 // POST: Add a new service
 export async function POST(request: Request) {
+	const { userId } = await auth();
+
+	if (!userId) {
+		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+	}
+
 	try {
 		const serviceToAdd: Omit<DryCleanItem, '_id'> = await request.json();
 		const client = await clientPromise;
