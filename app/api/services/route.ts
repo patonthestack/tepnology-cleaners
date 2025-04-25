@@ -1,10 +1,10 @@
 import { DryCleanItem } from '@/types/dryCleanItem';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { auth } from '@clerk/nextjs/server';
 
 // GET: Retrieve all services
-export async function GET(request: NextRequest) {
+export async function GET() {
 	try {
 		const client = await clientPromise;
 		const db = client.db('tepnologyCleaners');

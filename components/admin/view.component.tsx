@@ -18,7 +18,14 @@ import {
 import LinearProgress from '@mui/material/LinearProgress';
 import { blue, blueGrey, grey } from '@mui/material/colors';
 import { useRouter } from 'next/navigation';
-import { FC, ReactElement, SetStateAction, useEffect, useState } from 'react';
+import {
+	Dispatch,
+	FC,
+	ReactElement,
+	SetStateAction,
+	useEffect,
+	useState,
+} from 'react';
 import DryCleanCard from '../services/drycleancard.component';
 
 const styles = {
@@ -39,7 +46,7 @@ const styles = {
 
 interface CreateModalProps {
 	modalOpen: boolean;
-	setModalOpen: SetStateAction<any>;
+	setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const CreateModal: FC<CreateModalProps> = ({ modalOpen, setModalOpen }) => {

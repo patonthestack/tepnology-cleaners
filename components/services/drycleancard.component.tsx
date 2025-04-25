@@ -91,11 +91,7 @@ interface AdminButtonsProps {
 	item: DryCleanItem;
 }
 
-const AdminButtons: FC<AdminButtonsProps> = ({
-	handleEdit,
-	handleDelete,
-	item,
-}) => {
+const AdminButtons: FC<AdminButtonsProps> = ({ handleEdit, handleDelete }) => {
 	return (
 		<>
 			<Box
