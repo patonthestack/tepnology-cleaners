@@ -1,11 +1,11 @@
 import DryCleanCard from '@/components/services/drycleancard.component';
-// import { DryCleanItem } from '@/types/dryCleanItem';
-// import { getServices } from '@/utils/servicesFetch';
+import { DryCleanItem } from '@/types/dryCleanItem';
+import { getServices } from '@/utils/servicesFetch';
 import { Box, Grid } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
-import { ObjectId } from 'mongodb';
 import type { Metadata } from 'next';
 import { FC } from 'react';
+import { BASE_URL } from '../config/constants';
 
 export const metadata: Metadata = {
 	title: 'Tepnology Cleaners | Services',
@@ -13,23 +13,12 @@ export const metadata: Metadata = {
 };
 
 const Services: FC = async () => {
-	console.log(`NEXT_PUBLIC_API_URL: ${process.env.NEXT_PUBLIC_API_URL}`);
-
-	const isLoading = false;
-	// const services: DryCleanItem[] = await getServices().then((servicesData) => {
-	// 	isLoading = false;
-	// 	return servicesData;
-	// });
-
-	const services = [
-		{
-			_id: new ObjectId('6807037c542904317d910295'),
-			type: 'Dress Shirt',
-			description: 'Dress shirts, collar shirts, button shirts',
-			price: 2.5,
-			imgSrc: '/images/DressShirt.jpg',
-		},
-	];
+	let isLoading = true;
+	console.log(`BASE_URL: ${BASE_URL}`);
+	const services: DryCleanItem[] = await getServices().then((servicesData) => {
+		isLoading = false;
+		return servicesData;
+	});
 
 	return (
 		<Box sx={{ width: '100%', height: '100%', my: 2 }}>
