@@ -1,6 +1,6 @@
 import DryCleanCard from '@/components/services/drycleancard.component';
-import { DryCleanItem } from '@/types/dryCleanItem';
-import { getServices } from '@/utils/servicesFetch';
+// import { DryCleanItem } from '@/types/dryCleanItem';
+// import { getServices } from '@/utils/servicesFetch';
 import { Box, Grid } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import { ObjectId } from 'mongodb';
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const Services: FC = async () => {
-	let isLoading = true;
+	const isLoading = true;
 	// const services: DryCleanItem[] = await getServices().then((servicesData) => {
 	// 	isLoading = false;
 	// 	return servicesData;
