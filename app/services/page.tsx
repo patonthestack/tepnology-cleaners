@@ -13,7 +13,9 @@ export const metadata: Metadata = {
 };
 
 const Services: FC = async () => {
-	const isLoading = true;
+	console.log(`NEXT_PUBLIC_API_URL: ${process.env.NEXT_PUBLIC_API_URL}`);
+
+	const isLoading = false;
 	// const services: DryCleanItem[] = await getServices().then((servicesData) => {
 	// 	isLoading = false;
 	// 	return servicesData;
