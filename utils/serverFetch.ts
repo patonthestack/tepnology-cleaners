@@ -1,5 +1,5 @@
+import { BASE_URL } from '@/app/config/constants';
 export default async function serverFetch(path: string, options = {}) {
-	const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-	const url = new URL(path, baseUrl);
+	const url = new URL(path, BASE_URL);
 	return fetch(url.toString(), options);
 }
