@@ -54,9 +54,9 @@ const CreateModal: FC<CreateModalProps> = ({ modalOpen, setModalOpen }) => {
 
 	const initState = { type: '', description: '', price: 0 };
 	const [newItem, setNewItem] = useState<Partial<DryCleanItem>>(initState);
-	const handleOnChange = (field: any, value: string) => {
+	const handleOnChange = (field: string, value: string) => {
 		if (field === 'price') {
-			const priceValue = parseFloat(value).toFixed(2);
+			const priceValue = parseFloat(parseFloat(value).toFixed(2));
 			setNewItem({ ...newItem, [field]: priceValue });
 			return;
 		}

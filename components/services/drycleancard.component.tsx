@@ -28,7 +28,13 @@ import {
 } from '@mui/material';
 import { blue, blueGrey, grey, red } from '@mui/material/colors';
 import { useRouter } from 'next/navigation';
-import { FC, MouseEventHandler, SetStateAction, useState } from 'react';
+import {
+	Dispatch,
+	FC,
+	MouseEventHandler,
+	SetStateAction,
+	useState,
+} from 'react';
 
 const styles = {
 	editModalContainer: {
@@ -115,7 +121,7 @@ const AdminButtons: FC<AdminButtonsProps> = ({ handleEdit, handleDelete }) => {
 interface EditModalProps {
 	itemToEdit: DryCleanItem;
 	modalOpen: boolean;
-	setModalOpen: SetStateAction<any>;
+	setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const EditModal: FC<EditModalProps> = ({
@@ -126,9 +132,9 @@ const EditModal: FC<EditModalProps> = ({
 	const router = useRouter();
 
 	const [updatedItem, setUpdatedItem] = useState<DryCleanItem>(itemToEdit);
-	const handleOnChange = (field: any, value: string) => {
+	const handleOnChange = (field: string, value: string) => {
 		if (field === 'price') {
-			const priceValue = parseFloat(value).toFixed(2);
+			const priceValue = parseFloat(parseFloat(value).toFixed(2));
 			setUpdatedItem({ ...updatedItem, [field]: priceValue });
 			return;
 		}
@@ -254,7 +260,7 @@ const EditModal: FC<EditModalProps> = ({
 
 interface DeleteModalProps {
 	modalOpen: boolean;
-	setModalOpen: SetStateAction<any>;
+	setModalOpen: Dispatch<SetStateAction<boolean>>;
 	itemToDelete: DryCleanItem;
 }
 
