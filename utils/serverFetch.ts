@@ -1,6 +1,7 @@
+import { BASE_URL } from '@/app/config/constants';
+
 export default async function serverFetch(path: string, options = {}) {
-	const baseUrl =
-		`https://${process.env.VERCEL_URL}` || 'http://localhost:3000';
+	const baseUrl = BASE_URL;
 	const url = new URL(path, baseUrl);
 	return fetch(url.toString(), options);
 }
