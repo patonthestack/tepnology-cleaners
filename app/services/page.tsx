@@ -5,7 +5,6 @@ import { Box, Grid } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import type { Metadata } from 'next';
 import { FC } from 'react';
-import { BASE_URL } from '../config/constants';
 
 export const metadata: Metadata = {
 	title: 'Tepnology Cleaners | Services',
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
 
 const Services: FC = async () => {
 	let isLoading = true;
-	console.log(`BASE_URL: ${BASE_URL}`);
+
 	const services: DryCleanItem[] = await getServices().then((servicesData) => {
 		isLoading = false;
 		return servicesData;

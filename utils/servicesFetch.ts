@@ -3,8 +3,6 @@ import { DryCleanItem } from '@/types/dryCleanItem';
 import { ObjectId } from 'mongodb';
 
 export const getServices = async (): Promise<DryCleanItem[]> => {
-	console.log(`BASE_URL: ${BASE_URL}`);
-	console.log(`NEXT_PUBLIC_API_URL: ${process.env.NEXT_PUBLIC_API_URL}`);
 	try {
 		const res = await fetch(`${BASE_URL}/api/services`, {
 			cache: 'no-store',
