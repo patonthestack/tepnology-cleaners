@@ -46,16 +46,6 @@ const styles = {
 		color: 'inherit',
 		textDecoration: 'none',
 	},
-	headerLinkXs: {
-		mr: 2,
-		display: { xs: 'flex', md: 'none' },
-		flexGrow: 1,
-		fontFamily: 'monospace',
-		fontWeight: 700,
-		letterSpacing: '.3rem',
-		color: 'inherit',
-		textDecoration: 'none',
-	},
 	navItems: {
 		my: 2,
 		color: 'white',
@@ -152,13 +142,12 @@ export const NavigationBar = () => {
 								);
 							})}
 						</Menu>
+						<Link href={'/'}>
+							<CheckroomIcon
+								sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, mt: 1.5 }}
+							/>
+						</Link>
 					</Box>
-					<CheckroomIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-					<Link href={'/'}>
-						<Typography variant="h5" noWrap sx={styles.headerLinkXs}>
-							TEPNOLOGY DRY CLEANERS
-						</Typography>
-					</Link>
 
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{PAGES.map((page) => {
@@ -194,14 +183,16 @@ export const NavigationBar = () => {
 								</Badge>
 							</IconButton>
 						</Link>
-						<SignedIn>
-							<UserButton />
-						</SignedIn>
-						<SignedOut>
-							<Box sx={{ cursor: 'pointer' }}>
-								<SignInButton mode="modal" />
-							</Box>
-						</SignedOut>
+						<Box sx={{ mr: { xs: 2, md: 1 } }}>
+							<SignedIn>
+								<UserButton />
+							</SignedIn>
+							<SignedOut>
+								<Box sx={{ cursor: 'pointer' }}>
+									<SignInButton mode="modal" />
+								</Box>
+							</SignedOut>
+						</Box>
 					</Box>
 				</Toolbar>
 			</Container>

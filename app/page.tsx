@@ -17,6 +17,7 @@ const styles = {
 		height: '50vh',
 		padding: 5,
 		fontFamily: 'Geist Arial Helvetica',
+		mt: { xs: 15, md: 0 },
 	},
 	headingText: {
 		fontWeight: 'bold',
